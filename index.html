@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>fast-engine – Hosting Website Instan, Seret Folder Langsung Online</title>
+<meta name="description" content="Unggah folder atau file ZIP website kamu, langsung online tanpa deploy. Cocok untuk toko, menu makanan, dan halaman usaha. Mulai gratis.">
+<meta name="application-name" content="fast-engine">
+<meta name="theme-color" content="#0e2a55">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="fast-engine">
+<meta property="og:locale" content="id_ID">
+<meta property="og:title" content="fast-engine – Hosting Website Instan, Seret Folder Langsung Online">
+<meta property="og:description" content="Unggah folder atau file ZIP website kamu, langsung online tanpa deploy.">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0e2a55;--navy2:#173c75;--gold:#f2b705;--ink:#142033;--bg:#f2f5fa;--card:#fff;--line:#d8e0ec;--soft:#e8eef8;--ok:#177a4b;--bad:#b3261e;--focus:#1d5fd6;--blue:#0e2a55;--shadow:0 1px 2px rgba(14,42,85,.06),0 10px 28px -14px rgba(14,42,85,.28)}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+[id]{scroll-margin-top:80px}
+body{margin:0;font:16px/1.55 'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+.strip{height:12px;background:conic-gradient(var(--ink) 25%,#fff 0 50%,var(--ink) 0 75%,#fff 0) 0 0/12px 12px}
+.wrap{max-width:1120px;margin:0 auto;padding:28px 16px 64px}
+h1,h2{font-family:'Bricolage Grotesque','Plus Jakarta Sans',system-ui,sans-serif;letter-spacing:-.02em}
+h1{font-size:clamp(2.1rem,5.4vw,3.6rem);line-height:1.04;font-weight:800;margin:0 0 14px}
+h2{font-size:1.35rem;font-weight:800;margin:0 0 14px;line-height:1.2}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+input{font:inherit;padding:10px 12px;border:1px solid #b9c5d8;border-radius:10px;width:100%;margin:6px 0;background:#fff;color:var(--ink)}
+button{font:inherit;font-weight:700;padding:10px 18px;border:0;border-radius:10px;background:var(--navy);color:#fff;cursor:pointer;transition:background .15s,transform .1s}
+button:hover:not(:disabled){background:var(--navy2)}
+button:active:not(:disabled){transform:translateY(1px)}
+button:disabled{opacity:.5;cursor:not-allowed}
+button.alt{background:var(--soft);color:var(--navy)}
+button.alt:hover:not(:disabled){background:#d9e4f5}
+button.danger{background:#fde8e5;color:var(--bad)}
+button.danger:hover:not(:disabled){background:#fbd5d0}
+button.gold{background:var(--gold);color:#241a00}
+button.gold:hover:not(:disabled){background:#ffc82a}
+button,input{min-height:44px}
+button:focus-visible,input:focus-visible,summary:focus-visible,.drop:focus-visible,a:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.band button:focus-visible,.band input:focus-visible,.band a:focus-visible{outline-color:var(--gold)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+/* navbar */
+.nav{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
+.nav-in{position:relative;max-width:1120px;margin:0 auto;padding:4px 16px 4px 12px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;color:var(--ink);text-decoration:none;font-weight:800}
+.logo img{height:46px;width:auto}
+.nav-act{display:flex;gap:4px}
+.ib{background:transparent;color:var(--ink);width:44px;padding:0;display:grid;place-items:center}
+.ib:hover:not(:disabled),.ib[aria-expanded="true"]{background:var(--soft)}
+.ib svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.menu{position:absolute;right:12px;top:100%;width:min(280px,calc(100vw - 24px));background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px;box-shadow:0 12px 32px rgba(14,42,85,.22)}
+.mi{display:block;width:100%;text-align:left;background:transparent;color:var(--ink)}
+.mi:hover:not(:disabled),.mi:focus-visible{background:var(--soft)}
+.sbar{position:absolute;left:0;right:0;top:100%;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 12px 32px rgba(14,42,85,.18);max-height:calc(100vh - 70px);overflow:auto}
+.sbar-in{max-width:1120px;margin:0 auto;padding:6px 12px 10px}
+.sbar .row{flex-wrap:nowrap}
+.sbar input{margin:0;flex:1;min-width:0}
+.sstat{margin:8px 2px 4px;font-size:.9rem;color:#566179}
+.sres{list-style:none;margin:0;padding:0}
+.res{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;text-align:left;background:transparent;color:var(--ink);border-top:1px solid var(--line);border-radius:0}
+.res:hover:not(:disabled),.res:focus-visible{background:var(--soft)}
+.res b{overflow-wrap:anywhere}
+.res small{flex:none}
+/* pita atas: hero + masuk */
+.band{position:relative;overflow:hidden;color:#fff;background:radial-gradient(900px 420px at 88% -10%,rgba(242,183,5,.22),transparent 60%),linear-gradient(135deg,var(--navy) 0%,#0a1f40 100%)}
+.band::after{content:"";display:block;height:12px;background:conic-gradient(var(--gold) 25%,var(--navy) 0 50%,var(--gold) 0 75%,var(--navy) 0) 0 0/12px 12px}
+.stage{max-width:1120px;margin:0 auto;padding:36px 16px 44px;display:grid;gap:32px;align-items:center}
+.hero p{margin:0 0 18px;font-size:1.08rem;max-width:34em;color:#d6e0f2}
+.ticks{list-style:none;margin:0 0 26px;padding:0;display:grid;gap:8px}
+.ticks li{display:flex;gap:10px;align-items:center;font-weight:600}
+.ticks svg{flex:none;width:22px;height:22px;padding:4px;border-radius:50%;background:var(--gold);stroke:#241a00;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.stage.in{padding:22px 16px 26px}
+.stage.in h1{font-size:clamp(1.6rem,3.6vw,2.2rem);margin:0 0 6px}
+.stage.in .hero p{margin:0}
+.stage.in .ticks,.stage.in .mock{display:none}
+.band small{color:#b6c4de}
+#who{display:inline-block;margin-top:10px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;font-weight:600;font-size:.88rem;overflow-wrap:anywhere}
+#who:empty{display:none}
+#auth{color:var(--ink)}
+#amsg{margin:10px 0 0;font-weight:600;overflow-wrap:anywhere}
+/* ilustrasi seret-lalu-online (sekali jalan) */
+.mock{position:relative;max-width:460px;height:150px;margin-top:6px}
+.mk-win{position:absolute;right:0;top:0;width:78%;background:#fff;border-radius:12px;box-shadow:0 18px 40px -12px rgba(0,0,0,.5);overflow:hidden;color:var(--ink)}
+.mk-bar{display:flex;gap:5px;align-items:center;padding:8px 10px;background:#e8eef8}
+.mk-bar i{width:8px;height:8px;border-radius:50%;background:#9fb0cc}
+.mk-bar span{margin-left:6px;flex:1;min-width:0;font-size:.72rem;font-weight:600;background:#fff;border-radius:6px;padding:2px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mk-body{position:relative;padding:14px 12px 16px;display:grid;gap:8px}
+.mk-body b{display:block;height:10px;border-radius:5px;background:#cfdaee;transform-origin:left;animation:fill .5s ease-out both}
+.mk-body .l1{width:70%;background:var(--navy);animation-delay:1.5s}.mk-body .l2{width:92%;animation-delay:1.65s}.mk-body .l3{width:55%;animation-delay:1.8s}
+.mk-body em{position:absolute;right:10px;bottom:10px;font-style:normal;font-weight:800;font-size:.75rem;background:#d6f5e5;color:var(--ok);padding:2px 10px;border-radius:999px;animation:pop .35s 2.2s both}
+.mk-folder{position:absolute;left:0;bottom:6px;display:flex;align-items:center;gap:8px;background:var(--gold);color:#241a00;font-weight:800;font-size:.9rem;padding:10px 14px;border-radius:10px;box-shadow:0 10px 24px -8px rgba(0,0,0,.5);opacity:0;animation:fly 1.5s .3s ease-in-out both}
+.mk-folder svg{width:20px;height:20px;fill:#241a00}
+@keyframes fly{0%{opacity:0;transform:translate(-10px,14px)}15%{opacity:1}75%{opacity:1;transform:translate(150px,-34px) scale(1)}100%{opacity:0;transform:translate(190px,-44px) scale(.7)}}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+/* isi */
+.dash{display:grid;gap:20px;align-items:start}
+#help{margin-bottom:20px}
+.site{display:flex;justify-content:space-between;gap:10px 8px;align-items:center;flex-wrap:wrap;padding:12px 0;border-top:1px solid var(--line)}
+.site .id{display:flex;align-items:center;gap:12px;min-width:0;flex:1 1 150px}
+.av{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--navy);color:var(--gold);font:800 1.1rem 'Bricolage Grotesque',system-ui,sans-serif;text-transform:uppercase}
+.site.on .av{background:var(--gold);color:#241a00}
+.site .nm{min-width:0;display:grid}
+.site strong{overflow-wrap:anywhere;line-height:1.25}
+.site small{overflow-wrap:anywhere}
+.site a{padding:10px 6px;font-weight:700;color:var(--focus)}
+.site .row{justify-content:flex-end;gap:4px}
+.site .row button{white-space:nowrap;padding:8px 12px}
+.drop{border:2px dashed var(--navy);border-radius:16px;padding:34px 16px;text-align:center;background:linear-gradient(180deg,#f7f9fd,#eef3fb);transition:background .15s,border-color .15s}
+.drop.over{background:#fff3c4;border-color:var(--gold)}
+.drop .ico{width:56px;height:56px;margin:0 auto 10px;border-radius:50%;background:var(--navy);display:grid;place-items:center}
+.drop .ico svg{width:28px;height:28px;stroke:var(--gold);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.drop p{margin:6px 0}
+.drop button{margin:4px}
+.bar{height:10px;background:var(--soft);border-radius:5px;overflow:hidden;margin-top:12px}
+.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width .2s}
+#quota{margin:14px 0 0;font-size:.92rem;font-weight:700}
+#msg{margin-top:12px;font-weight:600;overflow-wrap:anywhere}
+.err{color:var(--bad)}.ok{color:var(--ok)}
+small{color:#566179}
+#upempty{display:none;text-align:center;color:#566179}
+#upempty h2{color:var(--ink)}
+#up.hide+#upempty{display:block}
+ol{padding-left:20px;margin:0 0 12px}
+code{background:var(--soft);padding:1px 5px;border-radius:4px;font-size:.85em;overflow-wrap:anywhere}
+details{border-top:1px solid var(--line);padding:2px 0}
+summary{cursor:pointer;font-weight:700;padding:12px 0;min-height:44px}
+details p{margin:0 0 12px}
+.foot{border-top:1px solid var(--line);background:#fff;text-align:center;padding:18px 16px;color:#566179;font-size:.9rem}
+.foot b{color:var(--ink)}
+@media(min-width:900px){
+  .stage{grid-template-columns:1.15fr .85fr;gap:48px;padding:56px 16px 64px}
+  .stage.in{grid-template-columns:1fr;padding:26px 16px 30px}
+  .dash{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
+  .wrap{padding-top:36px}
+}
+@media(max-width:520px){.wrap{padding:20px 12px 48px}.card{padding:16px}.card .row button{flex:1}.card .site .row button{flex:none}.site .row{flex-basis:100%;justify-content:flex-start;gap:2px}.site .row button{padding:8px 10px;font-size:.9rem}.drop{padding:24px 12px}#newname{flex:1 1 100%}.mock{height:130px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}.mock *{animation:none!important}.mk-folder{display:none}}
+.hide{display:none!important}
+[tabindex="-1"]:focus{outline:none}
+</style>
+</head>
+<body>
+<div class="strip"></div>
+<nav class="nav" aria-label="Menu utama">
+  <div class="nav-in">
+    <a class="logo" href="#top" aria-label="fast-engine, ke atas"><img src="logo.png" alt="fast-engine" onerror="this.remove();document.getElementById('bt').hidden=false"><span id="bt" hidden>fast-engine</span></a>
+    <div class="nav-act">
+      <button class="ib" id="sbtn" type="button" aria-label="Cari" aria-expanded="false" aria-controls="sbar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+      <button class="ib" id="mbtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    </div>
+    <div class="menu hide" id="menu">
+      <button class="mi need-auth hide" type="button" data-go="sites">Website saya</button>
+      <button class="mi need-auth hide" type="button" data-go="up">Upload website</button>
+      <button class="mi" type="button" data-go="help">Cara pakai</button>
+      <button class="mi no-auth" type="button" data-go="auth">Masuk atau daftar</button>
+      <button class="mi need-auth hide" type="button" id="out">Keluar</button>
+    </div>
+  </div>
+  <div class="sbar hide" id="sbar">
+    <div class="sbar-in">
+      <div class="row">
+        <input id="q" type="search" placeholder="Cari website atau bantuan" aria-label="Cari website atau bantuan" autocomplete="off" enterkeyhint="search">
+        <button class="alt" type="button" id="sclose">Tutup</button>
+      </div>
+      <p class="sstat" id="sstat" aria-live="polite"></p>
+      <ul class="sres" id="sres"></ul>
+    </div>
+  </div>
+</nav>
+
+<header class="band" id="top">
+  <div class="stage" id="stage">
+    <div class="hero">
+      <h1>Seret folder, langsung jadi website</h1>
+      <p>Siapkan folder website, unggah, dan alamatnya langsung bisa dibuka. Tanpa deploy, tanpa akun hosting.</p>
+      <ul class="ticks">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Cocok untuk toko, menu makanan, dan halaman usaha</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Bisa dari laptop, HP, atau tablet</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Upload ulang kapan saja, isi lama otomatis diganti</li>
+      </ul>
+      <div class="mock" aria-hidden="true">
+        <div class="mk-folder"><svg viewBox="0 0 24 24"><path d="M3 6a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>tokoku/</div>
+        <div class="mk-win"><div class="mk-bar"><i></i><i></i><i></i><span>fast-engine.netlify.app/s/tokoku/</span></div><div class="mk-body"><b class="l1"></b><b class="l2"></b><b class="l3"></b><em>Online</em></div></div>
+      </div>
+      <span id="who"></span>
+    </div>
+    <section id="auth" class="card hide">
+    <h2>Masuk atau daftar</h2>
+    <form id="authform" novalidate>
+      <input id="em" type="email" placeholder="Email" autocomplete="email" autocapitalize="none" aria-label="Email">
+      <input id="pw" type="password" placeholder="Password (minimal 6 karakter)" autocomplete="current-password" aria-label="Password">
+      <div class="row"><button id="login" type="submit">Masuk</button><button id="signup" type="button" class="alt">Daftar</button></div>
+    </form>
+    <p id="amsg" role="alert"></p>
+  </section>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="help" class="card hide">
+    <h2>Cara pakai</h2>
+    <ol>
+      <li>Buat website: isi nama, lalu tekan <b>Buat website</b>.</li>
+      <li>Siapkan folder website. File utama wajib bernama <code>index.html</code>.</li>
+      <li>Di laptop, seret folder ke kotak upload. Di HP atau tablet, jadikan satu file ZIP lalu tekan <b>Pilih ZIP</b>.</li>
+      <li>Setelah selesai, tekan <b>Buka</b>.</li>
+    </ol>
+    <details id="faq-index"><summary>Kenapa file utama harus bernama index.html?</summary><p>File <code>index.html</code> adalah halaman yang pertama terbuka saat orang mengunjungi alamat websitemu. Huruf besar dan kecil tidak dibedakan.</p></details>
+    <details id="faq-ukuran"><summary>Berapa ukuran maksimal website?</summary><p>Sementara 20 MB per upload, dan tiap file maksimal 20 MB. Kecilkan foto sebelum upload supaya muat.</p></details>
+    <details id="faq-foto"><summary>Foto atau CSS saya tidak muncul</summary><p>Pastikan nama file di kode sama dengan nama file di folder, misalnya <code>img/foto 1.jpg</code>. Huruf besar dan kecil tidak dibedakan, spasi boleh. Jangan pakai tanda ? atau # di nama file. Alamat berawalan garis miring seperti <code>/img/foto.jpg</code> di HTML dan CSS otomatis diarahkan ke websitemu. Di JavaScript, pakai alamat tanpa garis miring di depan, misalnya <code>img/foto.jpg</code>.</p></details>
+    <details id="faq-zip"><summary>Cara upload dari HP atau tablet (file ZIP)</summary><p>HP dan tablet tidak bisa memilih satu folder utuh, jadi jadikan folder websitemu satu file ZIP dulu. Di iPhone dan iPad: buka aplikasi Files, tekan lama folder, lalu pilih Compress. Di Android: pakai aplikasi pengelola file yang punya menu Kompres atau Compress. Setelah itu tekan <b>Pilih ZIP</b> dan pilih file ZIP-nya.</p></details>
+    <details id="faq-hp"><summary>Tampilan website tidak rapi di HP</summary><p>Taruh baris ini di bagian head setiap halaman: <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code></p></details>
+    <details id="faq-simpan"><summary>Bisakah website menyimpan data di browser pengunjung?</summary><p>Tidak. Demi keamanan, website berjalan di lingkungan terisolasi, jadi <code>localStorage</code>, cookie, dan IndexedDB tidak tersedia.</p></details>
+    <details id="faq-ulang"><summary>Apa yang terjadi kalau saya upload ulang?</summary><p>Seluruh isi lama diganti dengan yang baru. Kalau upload gagal di tengah jalan, isi lama tidak berubah dan jatah upload hari itu tidak terpakai.</p></details>
+    <details id="faq-hapus"><summary>Bagaimana cara mengganti nama atau menghapus website?</summary><p>Di daftar Website saya, tekan <b>Ganti nama</b> atau <b>Hapus</b> di baris website itu. Ganti nama mengubah alamat websitenya, jadi alamat lama tidak bisa dibuka lagi. Hapus menghapus website beserta semua filenya dan tidak bisa dibatalkan. Untuk mengganti isi website, cukup upload ulang.</p></details>
+    <details id="faq-ikon"><summary>Cara mengganti ikon (favicon) dan judul tab website saya</summary><p>Masukkan gambar ikon ke foldermu, misalnya <code>favicon.png</code> (persegi, 64 x 64 piksel atau lebih), lalu tambahkan di bagian head setiap halaman: <code>&lt;link rel="icon" href="favicon.png"&gt;</code>. Judul tab diatur dengan <code>&lt;title&gt;Nama Tokomu&lt;/title&gt;</code>. Kalau kamu tidak memasang ikon, browser menampilkan ikon fast-engine.</p></details>
+    <details id="faq-batas"><summary>Berapa kali saya boleh upload per hari?</summary><p>Free 1 kali, Premium 5 kali, Pro 10 kali per hari. Hitungannya per akun (semua websitemu digabung) dan kembali penuh setiap pukul 00.00 WIB. Upload yang gagal tidak mengurangi jatah.</p></details>
+    <div style="margin-top:12px"><button class="alt" type="button" id="hclose">Tutup</button></div>
+  </section>
+
+  <section id="app" class="hide">
+    <div class="dash">
+    <div class="card" id="sites">
+      <h2>Website saya</h2>
+      <div id="list"></div>
+      <div class="row" style="margin-top:12px">
+        <input id="newname" placeholder="nama-website" style="flex:1;min-width:200px" autocapitalize="none" autocomplete="off" aria-label="Nama website baru">
+        <button id="create" type="button">Buat website</button>
+      </div>
+      <small>Nama website: huruf kecil, angka, dan tanda -, minimal 3 karakter.</small>
+      <p id="note" role="alert" style="margin:8px 0 0;font-weight:600"></p>
+    </div>
+    <div class="card hide" id="up">
+      <h2>Upload ke <span id="curname"></span></h2>
+      <div class="drop" id="drop">
+        <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg></div>
+        <p><strong id="dtxt">Seret folder atau file ZIP ke sini</strong></p>
+        <p><small id="hint">Wajib ada index.html. Maksimal 20 MB. Upload baru menggantikan isi lama.</small></p>
+        <button class="alt" type="button" id="pickdir">Pilih folder</button>
+        <button class="alt" type="button" id="pickzip">Pilih ZIP</button>
+        <input id="dirin" type="file" webkitdirectory multiple class="hide" aria-label="Pilih folder website">
+        <input id="zipin" type="file" accept=".zip,application/zip" class="hide" aria-label="Pilih file ZIP website">
+      </div>
+      <p id="quota" aria-live="polite"></p>
+      <div class="bar"><i id="bar"></i></div>
+      <div id="msg" aria-live="polite"></div>
+    </div>
+      <div class="card" id="upempty"><h2>Upload website</h2><p>Pilih salah satu website di daftar, lalu seret folder atau ZIP-nya ke sini.</p></div>
+    </div>
+  </section>
+</main>
+<footer class="foot"><b>fast-engine</b> – hosting website instan</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const sb = supabase.createClient('https://mvfmnkucaqasipmvtmxx.supabase.co', 'sb_publishable_xuWYX3LZ_pPFWlxsptfmgg_gMT_x98t');
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const MAX = 20 * 1048576, MAX_FILES = 1000; // batas sementara; per paket dibuat di tahap 2
+const RESERVED = ['www', 'admin', 'api', 'app', 'mail', 'ftp', 's', 'login', 'daftar', 'fast-engine', 'klontong'];
+const MIME = {html:'text/html',htm:'text/html',css:'text/css',js:'text/javascript',mjs:'text/javascript',json:'application/json',svg:'image/svg+xml',png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',gif:'image/gif',webp:'image/webp',avif:'image/avif',ico:'image/x-icon',txt:'text/plain',xml:'application/xml',woff:'font/woff',woff2:'font/woff2',ttf:'font/ttf',otf:'font/otf',mp4:'video/mp4',webm:'video/webm',mp3:'audio/mpeg',pdf:'application/pdf'};
+const mimeOf = f => f.blob.type || MIME[f.path.split('.').pop().toLowerCase()] || 'application/octet-stream';
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let user = null, subs = [], cur = null, busy = false, quota = null, qseq = 0;
+
+const setText = (sel, t, cls = '') => { const e = $(sel); e.className = cls; e.textContent = t; };
+const say = (t, cls) => setText('#msg', t, cls), note = (t, cls) => setText('#note', t, cls), amsg = (t, cls) => setText('#amsg', t, cls);
+const bar = p => { $('#bar').style.width = p + '%'; };
+const goTo = id => { // gulir ke bagian tujuan, lalu pindahkan fokus keyboard ke sana
+  const e = $('#' + id);
+  if (!e || e.offsetParent === null) return;
+  e.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  if (!e.hasAttribute('tabindex')) e.setAttribute('tabindex', '-1');
+  e.focus({ preventScroll: true });
+};
+
+// ---- navbar: menu hamburger ----
+const isOpen = id => !$(id).classList.contains('hide');
+const menuItems = () => $$('#menu .mi:not(.hide)');
+function showMenu(o) { $('#menu').classList.toggle('hide', !o); $('#mbtn').setAttribute('aria-expanded', String(o)); }
+$('#mbtn').onclick = () => { const o = !isOpen('#menu'); showSearch(false); showMenu(o); if (o) menuItems()[0].focus(); };
+$('#menu').addEventListener('keydown', e => {
+  const it = menuItems(), i = it.indexOf(document.activeElement);
+  if (e.key === 'ArrowDown' || (e.key === 'Tab' && !e.shiftKey && i === it.length - 1)) { e.preventDefault(); it[(i + 1) % it.length].focus(); }
+  else if (e.key === 'ArrowUp' || (e.key === 'Tab' && e.shiftKey && i <= 0)) { e.preventDefault(); it[(i - 1 + it.length) % it.length].focus(); }
+  else if (e.key === 'Home') { e.preventDefault(); it[0].focus(); }
+  else if (e.key === 'End') { e.preventDefault(); it[it.length - 1].focus(); }
+});
+function openHelp(faqId) {
+  $('#help').classList.remove('hide');
+  $$('#help details').forEach(d => { d.open = !!faqId && d.id === faqId; });
+  goTo(faqId || 'help');
+}
+function goUpload() {
+  if (!cur) { note('Pilih website dulu (tombol Pilih), lalu upload.', 'err'); return goTo('sites'); }
+  goTo('up');
+}
+const ACTIONS = { sites: () => goTo('sites'), up: goUpload, help: () => openHelp(), auth: () => goTo('auth') };
+$$('[data-go]').forEach(b => b.onclick = () => { showMenu(false); ACTIONS[b.dataset.go](); });
+$('#hclose').onclick = () => $('#help').classList.add('hide');
+
+// ---- navbar: cari ----
+const norm = s => s.toLowerCase();
+function searchItems() {
+  const items = [];
+  subs.forEach(s => items.push({ title: s.name, kind: 'Website', text: s.name, run: () => pick(s) }));
+  [['Website saya', 'sites', 'daftar kelola buat nama', true], ['Upload website', 'up', 'unggah folder zip seret drag', true],
+   ['Cara pakai', 'help', 'bantuan panduan tutorial langkah', null], ['Masuk atau daftar', 'auth', 'login email password akun', false]]
+    .forEach(([t, id, k, needAuth]) => { if (needAuth === null || needAuth === !!user) items.push({ title: t, kind: 'Menu', text: t + ' ' + k, run: ACTIONS[id] }); });
+  $$('#help details').forEach(d => items.push({ title: d.querySelector('summary').textContent, kind: 'Bantuan', text: d.textContent, run: () => openHelp(d.id) }));
+  return items;
+}
+function renderSearch() {
+  const q = norm($('#q').value.trim()), box = $('#sres'), stat = $('#sstat');
+  box.textContent = '';
+  if (!q) { stat.textContent = 'Ketik nama website, atau kata seperti "foto", "zip", "index".'; return; }
+  const words = q.split(/\s+/);
+  const inTitle = it => words.every(w => norm(it.title).includes(w)) ? 0 : 1; // judul cocok tampil lebih dulu
+  const hits = searchItems().filter(it => words.every(w => norm(it.text).includes(w))).sort((a, b) => inTitle(a) - inTitle(b)).slice(0, 8);
+  stat.textContent = hits.length ? `${hits.length} hasil` : `Tidak ada hasil untuk "${$('#q').value.trim()}".`;
+  hits.forEach(it => {
+    const li = document.createElement('li'), b = document.createElement('button');
+    b.type = 'button'; b.className = 'res';
+    const t = document.createElement('b'), k = document.createElement('small');
+    t.textContent = it.title; k.textContent = it.kind; b.append(t, k);
+    b.onclick = () => { showSearch(false); it.run(); };
+    li.append(b); box.append(li);
+  });
+}
+function showSearch(o) {
+  $('#sbar').classList.toggle('hide', !o); $('#sbtn').setAttribute('aria-expanded', String(o));
+  if (!o) { $('#q').value = ''; $('#sres').textContent = ''; }
+}
+$('#sbtn').onclick = () => { const o = !isOpen('#sbar'); showMenu(false); showSearch(o); if (o) { renderSearch(); $('#q').focus(); } };
+$('#sclose').onclick = () => { showSearch(false); $('#sbtn').focus(); };
+$('#q').oninput = renderSearch;
+$('#q').onkeydown = e => {
+  const first = $('#sres .res');
+  if (e.key === 'Enter') { e.preventDefault(); if (first) first.click(); }
+  else if (e.key === 'ArrowDown' && first) { e.preventDefault(); first.focus(); }
+};
+$('#sres').addEventListener('keydown', e => {
+  const r = $$('#sres .res'), i = r.indexOf(document.activeElement);
+  if (e.key === 'ArrowDown') { e.preventDefault(); r[Math.min(i + 1, r.length - 1)].focus(); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); i > 0 ? r[i - 1].focus() : $('#q').focus(); }
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest('#menu, #mbtn')) showMenu(false);
+  if (!e.target.closest('#sbar, #sbtn')) showSearch(false);
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (isOpen('#menu')) { showMenu(false); $('#mbtn').focus(); }
+  else if (isOpen('#sbar')) { showSearch(false); $('#sbtn').focus(); }
+});
+
+// ---- masuk / daftar ----
+function setAuthUI() {
+  $('#stage').classList.toggle('in', !!user);
+  $('#auth').classList.toggle('hide', !!user);
+  $('#app').classList.toggle('hide', !user);
+  $$('.need-auth').forEach(e => e.classList.toggle('hide', !user));
+  $$('.no-auth').forEach(e => e.classList.toggle('hide', !!user));
+  if (!user) $('#up').classList.add('hide');
+}
+function resetUI() {
+  user = null; cur = null; subs = [];
+  quota = null; qseq++; renderQuota();
+  $('#list').textContent = ''; $('#pw').value = ''; $('#curname').textContent = ''; say(''); note(''); bar(0);
+  showMenu(false); showSearch(false); setAuthUI();
+}
+async function authenticate(kind) {
+  const email = $('#em').value.trim(), password = $('#pw').value;
+  if (!email || !password) return amsg('Isi email dan password.', 'err');
+  if (!/^\S+@\S+\.\S+$/.test(email)) return amsg('Format email belum benar.', 'err');
+  if (kind === 'up' && password.length < 6) return amsg('Password minimal 6 karakter.', 'err');
+  $('#login').disabled = $('#signup').disabled = true;
+  try {
+    if (kind === 'in') {
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) return amsg(/not confirmed/i.test(error.message) ? 'Email belum dikonfirmasi. Cek kotak masuk emailmu.' : /invalid login/i.test(error.message) ? 'Email atau password salah.' : 'Gagal masuk: ' + error.message, 'err');
+      amsg(''); await start();
+    } else {
+      const { data, error } = await sb.auth.signUp({ email, password });
+      if (error) amsg('Pendaftaran gagal: ' + error.message, 'err');
+      else if (data && data.user && data.user.identities && !data.user.identities.length) amsg('Email ini sudah terdaftar. Silakan masuk.', 'err');
+      else if (data && data.session) { amsg(''); await start(); }
+      else amsg('Pendaftaran berhasil. Cek email untuk konfirmasi, lalu masuk.', 'ok');
+    }
+  } catch (e) { amsg('Tidak bisa terhubung. Periksa internet kamu.', 'err'); }
+  finally { $('#login').disabled = $('#signup').disabled = false; }
+}
+$('#authform').onsubmit = e => { e.preventDefault(); authenticate('in'); };
+$('#signup').onclick = () => authenticate('up');
+$('#out').onclick = async () => {
+  showMenu(false);
+  const wasBusy = busy;
+  if (wasBusy && !confirm('Upload sedang berjalan. Keluar sekarang?')) return;
+  resetUI(); // user dikosongkan lebih dulu agar pendengar sesi tidak menampilkan "sesi berakhir"
+  try { await sb.auth.signOut(); } catch (e) {}
+  goTo('top');
+};
+sb.auth.onAuthStateChange(ev => {
+  if (ev === 'SIGNED_OUT' && user) { resetUI(); amsg('Sesi berakhir. Silakan masuk lagi.', 'err'); goTo('auth'); }
+});
+async function start() {
+  try { const { data } = await sb.auth.getSession(); user = data.session ? data.session.user : null; }
+  catch (e) { user = null; amsg('Tidak bisa terhubung. Periksa internet kamu.', 'err'); }
+  setAuthUI();
+  if (user) { $('#who').textContent = user.email; await loadSubs(); }
+}
+
+// ---- daftar website ----
+async function loadSubs() {
+  const { data, error } = await sb.from('subdomains').select('id,name').eq('user_id', user.id).order('created_at');
+  if (error) return note('Gagal memuat daftar website. Muat ulang halaman.', 'err');
+  subs = data || [];
+  if (cur && !subs.some(s => s.id === cur.id)) { cur = null; $('#up').classList.add('hide'); }
+  renderList();
+}
+function renderList() {
+  const box = $('#list');
+  box.textContent = '';
+  if (!subs.length) { const s = document.createElement('small'); s.textContent = 'Belum ada website. Buat yang pertama di bawah.'; box.append(s); return; }
+  subs.forEach(s => {
+    const d = document.createElement('div'); d.className = 'site' + (cur && cur.id === s.id ? ' on' : '');
+    const id = document.createElement('div'); id.className = 'id';
+    const av = document.createElement('span'); av.className = 'av'; av.setAttribute('aria-hidden', 'true'); av.textContent = s.name.charAt(0);
+    const nm = document.createElement('div'); nm.className = 'nm';
+    const n = document.createElement('strong'); n.textContent = s.name;
+    const u = document.createElement('small'); u.textContent = `/s/${s.name}/`;
+    nm.append(n, u); id.append(av, nm);
+    const act = document.createElement('span'); act.className = 'row';
+    const a = document.createElement('a'); a.href = `/s/${s.name}/`; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Buka';
+    const mk = (t, cls, fn) => { const x = document.createElement('button'); x.type = 'button'; x.className = cls; x.textContent = t; x.setAttribute('aria-label', `${t} ${s.name}`); x.onclick = fn; return x; };
+    act.append(a, mk('Pilih', 'alt', () => pick(s)), mk('Ganti nama', 'alt', () => renameSite(s)), mk('Hapus', 'danger', () => deleteSite(s)));
+    d.append(id, act); box.append(d);
+  });
+}
+function pick(s) {
+  if (busy) return note('Tunggu upload selesai dulu.', 'err');
+  cur = s; $('#curname').textContent = s.name; $('#up').classList.remove('hide');
+  say(''); bar(0); note(''); renderList(); goTo('up'); refreshQuota();
+}
+async function createSite() {
+  const name = $('#newname').value.trim().toLowerCase();
+  if (!/^[a-z0-9-]{3,63}$/.test(name)) return note('Nama 3–63 karakter: huruf kecil, angka, dan tanda -.', 'err');
+  if (RESERVED.includes(name)) return note('Nama itu dicadangkan. Pilih nama lain.', 'err');
+  $('#create').disabled = true;
+  try {
+    const { error } = await sb.from('subdomains').insert({ name, user_id: user.id });
+    if (error) return note(error.code === '23505' ? 'Nama itu sudah dipakai. Coba nama lain.' : 'Gagal membuat website: ' + error.message, 'err');
+    $('#newname').value = ''; note(''); await loadSubs();
+    const s = subs.find(x => x.name === name); if (s) pick(s);
+  } catch (e) { note('Tidak bisa terhubung. Periksa internet kamu.', 'err'); }
+  finally { $('#create').disabled = false; }
+}
+const dbErr = e => /failed to fetch|networkerror|load failed/i.test((e && e.message) || '') ? 'Tidak bisa terhubung. Periksa internet kamu.' : ((e && e.message) || 'kesalahan tidak dikenal');
+async function renameSite(s) {
+  if (busy) return note('Tunggu upload selesai dulu.', 'err');
+  const input = prompt(`Nama baru untuk "${s.name}".\nAlamat lama (/s/${s.name}/) tidak akan bisa dibuka lagi.`, s.name);
+  if (input === null) return;
+  const name = input.trim().toLowerCase();
+  if (name === s.name) return note('');
+  if (!/^[a-z0-9-]{3,63}$/.test(name)) return note('Nama 3–63 karakter: huruf kecil, angka, dan tanda -.', 'err');
+  if (RESERVED.includes(name)) return note('Nama itu dicadangkan. Pilih nama lain.', 'err');
+  busy = true;
+  try {
+    const { data, error } = await sb.from('subdomains').update({ name }).eq('id', s.id).eq('user_id', user.id).select('id');
+    if (error) return note(error.code === '23505' ? 'Nama itu sudah dipakai. Coba nama lain.' : 'Gagal mengganti nama: ' + dbErr(error), 'err');
+    if (!data || !data.length) return note('Gagal mengganti nama: website tidak ditemukan.', 'err');
+    note(`Nama diganti menjadi ${name}.`, 'ok');
+    if (cur && cur.id === s.id) $('#curname').textContent = name;
+    const was = cur && cur.id;
+    await loadSubs();
+    if (was) cur = subs.find(x => x.id === was) || null;
+    renderList();
+  } catch (e) { note('Tidak bisa terhubung. Periksa internet kamu.', 'err'); }
+  finally { busy = false; }
+}
+async function deleteSite(s) {
+  if (busy) return note('Tunggu upload selesai dulu.', 'err');
+  if (!confirm(`Hapus website "${s.name}" beserta semua filenya?\nIni tidak bisa dibatalkan.`)) return;
+  busy = true;
+  try {
+    const f = await sb.from('site_files').select('storage_key').eq('subdomain_id', s.id);
+    if (f.error) return note('Gagal menghapus: ' + dbErr(f.error), 'err');
+    const keys = (f.data || []).map(r => r.storage_key).filter(Boolean);
+    const { data, error } = await sb.from('subdomains').delete().eq('id', s.id).eq('user_id', user.id).select('id');
+    if (error) return note('Gagal menghapus: ' + dbErr(error), 'err');
+    if (!data || !data.length) return note('Gagal menghapus: website tidak ditemukan.', 'err');
+    for (let i = 0; i < keys.length; i += 100) { try { await sb.storage.from('sites').remove(keys.slice(i, i + 100)); } catch (e) {} }
+    if (cur && cur.id === s.id) { cur = null; $('#up').classList.add('hide'); $('#curname').textContent = ''; say(''); bar(0); }
+    note(`Website ${s.name} dihapus.`, 'ok');
+    await loadSubs();
+  } catch (e) { note('Tidak bisa terhubung. Periksa internet kamu.', 'err'); }
+  finally { busy = false; }
+}
+$('#create').onclick = createSite;
+$('#newname').onkeydown = e => { if (e.key === 'Enter') createSite(); };
+
+// ---- baca folder / ZIP ----
+async function walk(entry, prefix, out) {
+  if (entry.isFile) { const blob = await new Promise((ok, no) => entry.file(ok, no)); out.push({ path: prefix + entry.name, blob }); return; }
+  const rd = entry.createReader(), all = [];
+  for (;;) { const b = await new Promise((ok, no) => rd.readEntries(ok, no)); if (!b.length) break; all.push(...b); }
+  for (const c of all) await walk(c, prefix + entry.name + '/', out);
+}
+async function fromZip(file) {
+  if (file.size > MAX + 1048576) throw new Error('File ZIP lebih dari 20 MB.');
+  const z = await JSZip.loadAsync(file), out = [];
+  let total = 0;
+  for (const [n, e] of Object.entries(z.files)) {
+    if (e.dir) continue;
+    total += (e._data && e._data.uncompressedSize) || 0; // cegah ZIP yang membengkak saat dibuka
+    if (total > MAX) throw new Error('Isi ZIP lebih dari 20 MB setelah dibuka.');
+    out.push({ path: n, blob: await e.async('blob') });
+  }
+  return out;
+}
+const JUNK = s => s.startsWith('.') || s === '__MACOSX' || /^(thumbs\.db|desktop\.ini)$/i.test(s);
+const isIndex = f => f.path.toLowerCase() === 'index.html';
+function tidy(list) {
+  list = list.map(f => ({ blob: f.blob, path: String(f.path).replace(/\\/g, '/').replace(/^(\.?\/)+/, '') }))
+    .filter(f => f.path && !f.path.split('/').some(JUNK));
+  for (let n = 0; n < 3 && list.length && !list.some(isIndex); n++) { // buang folder pembungkus
+    const root = list[0].path.split('/')[0];
+    if (!list.every(f => f.path.startsWith(root + '/'))) break;
+    list.forEach(f => { f.path = f.path.slice(root.length + 1); });
+  }
+  return list;
+}
+const quotaFull = () => !!quota && !quota.unlimited && quota.remaining <= 0;
+function syncUp() { $('#pickdir').disabled = $('#pickzip').disabled = busy || quotaFull(); }
+function lock(on) { busy = on; syncUp(); $('#drop').setAttribute('aria-busy', String(on)); }
+function renderQuota() {
+  const e = $('#quota');
+  if (!quota) { e.textContent = ''; e.className = ''; syncUp(); return; }
+  if (quota.unlimited) { e.textContent = 'Admin · upload tanpa batas'; e.className = 'ok'; }
+  else if (!quota.package) { e.textContent = 'Belum ada paket aktif. Aktifkan paket untuk mulai upload.'; e.className = 'err'; }
+  else if (quota.remaining <= 0) { e.textContent = `Paket ${quota.package}: jatah upload hari ini habis (${quota.limit} dari ${quota.limit}). Kembali penuh pukul 00.00 WIB.`; e.className = 'err'; }
+  else { e.textContent = `Paket ${quota.package}: sisa upload hari ini ${quota.remaining} dari ${quota.limit} (reset pukul 00.00 WIB)`; e.className = ''; }
+  syncUp();
+}
+async function refreshQuota() { // false = status tidak bisa dibaca
+  const my = ++qseq;
+  try {
+    const { data, error } = await sb.rpc('deploy_status');
+    if (my !== qseq || !user) return !error;
+    if (error || !data) { quota = null; renderQuota(); return false; }
+    quota = data; renderQuota(); return true;
+  } catch (e) { if (my === qseq) { quota = null; renderQuota(); } return false; }
+}
+async function pool(items, n, fn) {
+  let i = 0, failed = null;
+  const run = async () => { while (i < items.length && !failed) { const k = i++; try { await fn(items[k]); } catch (e) { failed = failed || e; } } };
+  await Promise.all(Array.from({ length: Math.min(n, items.length) }, run));
+  if (failed) throw failed;
+}
+const serverMsg = e => {
+  const m = (e && e.message) || '';
+  if (e && e.code === 'PGRST202') return 'Server belum diperbarui. Hubungi admin.';
+  if (/failed to fetch|networkerror|load failed/i.test(m)) return 'Tidak bisa terhubung. Periksa internet kamu.';
+  return m || 'kesalahan tidak dikenal';
+};
+const friendly = m => /exceeded|too large|payload/i.test(m || '') ? 'File terlalu besar (maksimal 20 MB per file).' : (m || 'kesalahan tidak dikenal');
+
+// ---- upload: file baru diunggah dulu, lalu server menukar isi website dalam satu transaksi ----
+async function publish(list) {
+  if (busy) return;
+  if (!cur) return say('Pilih website dulu.', 'err');
+  list = tidy(list);
+  if (!list.length) return say('Folder atau ZIP kosong.', 'err');
+  if (!list.some(isIndex)) return say('Tidak ada index.html di bagian paling atas folder. Pastikan file utama bernama index.html.', 'err');
+  const seen = new Map(), skipped = [];
+  list.forEach(f => {
+    const k = f.path.toLowerCase();
+    if (/[?#]/.test(f.path) || /(^|\/)\.\.(\/|$)|\/\//.test(f.path) || f.path.length > 200 || seen.has(k)) skipped.push(f.path); else seen.set(k, f);
+  });
+  list = [...seen.values()];
+  if (!list.some(isIndex)) return say('index.html tidak bisa dipakai (nama tidak valid).', 'err');
+  if (list.length > MAX_FILES) return say(`Terlalu banyak file (${list.length}). Maksimal ${MAX_FILES}.`, 'err');
+  const total = list.reduce((a, f) => a + f.blob.size, 0);
+  if (total > MAX) return say(`Ukuran ${(total / 1048576).toFixed(1)} MB melebihi batas 20 MB. Kecilkan foto atau hapus file yang tidak perlu.`, 'err');
+
+  const target = cur, uploaded = [];
+  let done = 0;
+  lock(true); say('Memeriksa jatah upload…'); bar(0);
+  try {
+    if (!(await refreshQuota())) return say('Tidak bisa memeriksa jatah upload. Periksa internet lalu coba lagi.', 'err');
+    if (!quota.unlimited && !quota.package) return say('Kamu belum memiliki paket aktif, jadi belum bisa upload.', 'err');
+    if (quotaFull()) return say(`Jatah upload hari ini sudah habis (${quota.limit} kali per hari). Coba lagi besok setelah pukul 00.00 WIB.`, 'err');
+    say('Mengunggah…');
+    await pool(list, 4, async f => {
+      const key = `${target.id}/${crypto.randomUUID()}`, mime = mimeOf(f);
+      let last;
+      for (let t = 0; t < 2; t++) {
+        const { error } = await sb.storage.from('sites').upload(key, f.blob, { contentType: mime });
+        if (!error) { uploaded.push({ key, f, mime }); bar(++done / list.length * 90); return; }
+        last = error;
+      }
+      throw new Error(`${f.path}: ${friendly(last.message)}`);
+    });
+    say('Menerapkan…');
+    const rows = uploaded.map(u => ({ path: u.f.path, storage_key: u.key, mime: u.mime }));
+    const { data: old, error } = await sb.rpc('replace_site_files', { p_subdomain: target.id, p_rows: rows });
+    if (error) throw error;
+    uploaded.length = 0; // sudah dipakai website; jangan dihapus lagi
+    const stale = Array.isArray(old) ? old.filter(Boolean) : [];
+    if (stale.length) { try { await sb.storage.from('sites').remove(stale); } catch (e) {} }
+    bar(100);
+    await refreshQuota();
+    say(`Selesai: ${list.length} file online. Tekan Buka di daftar website untuk melihat hasilnya.` + (skipped.length ? ` Dilewati (nama kembar atau tidak valid): ${skipped.join(', ')}` : ''), 'ok');
+  } catch (err) {
+    if (uploaded.length) { try { await sb.storage.from('sites').remove(uploaded.map(u => u.key)); } catch (e) {} }
+    bar(0);
+    await refreshQuota();
+    say(`Upload gagal: ${serverMsg(err)} Isi website lama tidak berubah.`, 'err');
+  } finally { lock(false); }
+}
+const readErr = m => /central directory|real zip|corrupted zip/i.test(m) ? 'File ZIP rusak atau bukan file ZIP asli.' : /encrypted/i.test(m) ? 'ZIP yang diberi password belum didukung.' : m;
+async function safePublish(getList) { try { await publish(await getList()); } catch (e) { say('Folder atau ZIP tidak bisa dibaca: ' + readErr((e && e.message) || String(e)), 'err'); } }
+window.addEventListener('beforeunload', e => { if (busy) { e.preventDefault(); e.returnValue = ''; } });
+
+// ---- drag & drop ----
+['dragover', 'drop'].forEach(t => window.addEventListener(t, e => e.preventDefault())); // cegah browser membuka file di luar kotak
+const drop = $('#drop');
+drop.ondragover = () => drop.classList.add('over');
+drop.ondragleave = () => drop.classList.remove('over');
+drop.ondrop = e => {
+  drop.classList.remove('over');
+  const dt = e.dataTransfer; // dibaca sekarang, sebelum ada await
+  const entries = [...dt.items].map(i => (i.kind === 'file' && i.webkitGetAsEntry) ? i.webkitGetAsEntry() : null).filter(Boolean);
+  const files = [...dt.files];
+  safePublish(async () => {
+    if (files.length === 1 && /\.zip$/i.test(files[0].name)) return fromZip(files[0]);
+    if (entries.length) { const list = []; for (const en of entries) await walk(en, '', list); return list; }
+    return files.map(f => ({ path: f.name, blob: f }));
+  });
+};
+$('#pickdir').onclick = () => $('#dirin').click();
+$('#pickzip').onclick = () => $('#zipin').click();
+$('#dirin').onchange = e => { const fs = [...e.target.files]; e.target.value = ''; if (fs.length) safePublish(async () => fs.map(f => ({ path: f.webkitRelativePath || f.name, blob: f }))); };
+$('#zipin').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) safePublish(() => fromZip(f)); };
+if (matchMedia('(pointer:coarse)').matches || !('webkitdirectory' in document.createElement('input'))) {
+  $('#pickdir').classList.add('hide');
+  $('#dtxt').textContent = 'Pilih file ZIP website kamu';
+  $('#hint').textContent = 'Di HP atau tablet, jadikan folder website satu file ZIP dulu. Wajib ada index.html. Maksimal 20 MB. Upload baru menggantikan isi lama.';
+}
+start();
+</script>
+</body>
+</html>
